@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Whit Black – Ansiedade</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Whit Black é um sistema simples para ajudar em momentos de ansiedade, com exercícios rápidos de respiração e grounding."
+  />
+  <style>
+    :root {
+      /* Paleta calma azul-esverdeada */
+      --bg-main: #0f172a;      /* fundo escuro elegante */
+      --bg-card: #020617;      /* cartas/barras */
+      --accent:  #22c55e;      /* verde suave para ações */
+      --accent-soft: #0ea5e9;  /* azul para destaques */
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --danger: #f97373;
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.75);
+      --transition-fast: 0.2s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: radial-gradient(circle at top, #0b1120 0, #020617 40%, #020617 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      padding: 18px 16px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #020617 0%, #020617 45%, #0b1120 100%);
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      background: conic-gradient(from 210deg, #000 0, #020617 30%, #0f172a 55%, #e5e7eb 75%, #000 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(248, 250, 252, 0.6);
+      box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.8);
+      font-size: 16px;
+      font-weight: 600;
+      color: #f9fafb;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .brand-title {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .mode-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    .mode-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background var(--transition-fast), color var(--transition-fast);
+      font-weight: 500;
+    }
+
+    .mode-pill.active {
+      background: radial-gradient(circle at top left, var(--accent) 0, #16a34a 40%, #16a34a 100%);
+      color: #020617;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.65);
+    }
+
+    .mode-pill.inactive {
+      color: var(--text-muted);
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 4px;
+    }
+
+    .hero-card {
+      position: relative;
+      padding: 18px 18px 16px;
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at 10% 0, #1e293b 0, #020617 40%, #020617 100%);
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      overflow: hidden;
+    }
+
+    .hero-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent-soft);
+      margin-bottom: 6px;
+    }
+
+    .hero-title {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .hero-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      max-width: 260px;
+    }
+
+    .hero-glow {
+      position: absolute;
+      right: -40px;
+      top: -40px;
+      width: 160px;
+      height: 160px;
+      background: radial-gradient(circle, rgba(14, 165, 233, 0.26) 0, transparent 70%);
+      filter: blur(2px);
+    }
+
+    .hero-cta-row {
+      margin-top: 14px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .cta-btn {
+      flex: 1;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: #020617;
+      background: linear-gradient(135deg, var(--accent) 0, #16a34a 50%, #22c55e 100%);
+      box-shadow: 0 14px 32px rgba(34, 197, 94, 0.75);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+    }
+
+    .cta-btn span.icon {
+      font-size: 14px;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-1px) scale(1.01);
+      filter: brightness(1.05);
+      box-shadow: 0 22px 45px rgba(34, 197, 94, 0.9);
+    }
+
+    .cta-secondary {
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-size: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: background var(--transition-fast), border var(--transition-fast), color var(--transition-fast);
+    }
+
+    .cta-secondary:hover {
+      background: rgba(15, 23, 42, 1);
+      border-color: rgba(148, 163, 184, 0.9);
+      color: var(--text-main);
+    }
+
+    .section-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .tool-card {
+      position: relative;
+      border-radius: 18px;
+      padding: 10px 10px 10px;
+      background: radial-gradient(circle at top left, #0b1120 0, #020617 48%, #020617 100%);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.9);
+      cursor: pointer;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), border var(--transition-fast);
+    }
+
+    .tool-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.98);
+      border-color: rgba(148, 163, 184, 0.7);
+    }
+
+    .tool-icon-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      margin-bottom: 6px;
+    }
+
+    .tool-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .tool-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    .tool-pill {
+      position: absolute;
+      bottom: 7px;
+      right: 8px;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(14, 165, 233, 0.12);
+      color: #bae6fd;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+    }
+
+    .panel {
+      margin-top: 6px;
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at top, #020617 0, #020617 40%, #000 100%);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: var(--shadow-soft);
+      padding: 16px 16px 14px;
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+      animation: fadeUp 0.25s ease-out;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      gap: 10px;
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .panel-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .pill-small {
+      font-size: 10px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .close-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-muted);
+      font-size: 11px;
+      padding: 5px 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: background var(--transition-fast), color var(--transition-fast), border var(--transition-fast);
+    }
+
+    .close-btn:hover {
+      background: rgba(15, 23, 42, 1);
+      border-color: rgba(148, 163, 184, 0.9);
+      color: var(--text-main);
+    }
+
+    /* Breathing widget */
+
+    .breath-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .breath-circle {
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #0ea5e9 0, #0ea5e9 18%, #0f172a 65%, #020617 100%);
+      box-shadow:
+        0 0 0 2px rgba(148, 163, 184, 0.5),
+        0 0 45px rgba(56, 189, 248, 0.75),
+        0 40px 65px rgba(15, 23, 42, 0.98);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      transform-origin: center;
+      animation: pulse-soft 4s ease-in-out infinite;
+    }
+
+    .breath-inner-orbit {
+      width: 78%;
+      height: 78%;
+      border-radius: 50%;
+      border: 1px dashed rgba(15, 23, 42, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .breath-dot {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #f9fafb;
+      box-shadow: 0 0 16px rgba(248, 250, 252, 0.9);
+      top: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: orbit 14s linear infinite;
+    }
+
+    .breath-phase {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #e5e7eb;
+    }
+
+    .breath-counter {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .breath-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .btn-ghost {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.85);
+      color: var(--text-main);
+      padding: 7px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background var(--transition-fast), border var(--transition-fast);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(15, 23, 42, 1);
+      border-color: rgba(148, 163, 184, 0.9);
+    }
+
+    .btn-ghost.secondary {
+      color: var(--text-muted);
+    }
+
+    .hint-text {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    /* Grounding */
+
+    .grounding-list {
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .grounding-item {
+      border-radius: 14px;
+      padding: 10px 11px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .grounding-left {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .grounding-label {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .grounding-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .grounding-chip {
+      font-size: 11px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: none;
+      background: rgba(8, 47, 73, 0.95);
+      color: #e0f2fe;
+      cursor: pointer;
+      transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .grounding-chip.active {
+      background: linear-gradient(135deg, var(--accent-soft) 0, #06b6d4 100%);
+      color: #020617;
+      box-shadow: 0 10px 24px rgba(14, 165, 233, 0.8);
+      transform: translateY(-1px);
+    }
+
+    .grounding-progress {
+      margin-top: 10px;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* Footer */
+
+    footer {
+      margin-top: 10px;
+      font-size: 10px;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    footer a {
+      color: var(--accent-soft);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Animations */
+
+    @keyframes pulse-soft {
+      0%, 100% {
+        transform: scale(0.96);
+        box-shadow:
+          0 0 0 2px rgba(148, 163, 184, 0.5),
+          0 0 30px rgba(56, 189, 248, 0.6),
+          0 32px 58px rgba(15, 23, 42, 0.95);
+      }
+      50% {
+        transform: scale(1.03);
+        box-shadow:
+          0 0 0 2px rgba(148, 163, 184, 0.7),
+          0 0 60px rgba(56, 189, 248, 0.9),
+          0 42px 75px rgba(15, 23, 42, 0.99);
+      }
+    }
+
+    @keyframes orbit {
+      from {
+        transform: translateX(-50%) rotate(0deg) translateY(-73px);
+      }
+      to {
+        transform: translateX(-50%) rotate(360deg) translateY(-73px);
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsivo */
+
+    @media (min-width: 640px) {
+      .app-shell {
+        padding-top: 32px;
+      }
+      .hero-card {
+        padding: 22px 22px 18px;
+      }
+      .breath-circle {
+        width: 210px;
+        height: 210px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header>
+      <div class="brand">
+        <div class="brand-icon">WB</div>
+        <div class="brand-text">
+          <div class="brand-title">Whit Black</div>
+          <div class="brand-sub">Respire. Aterre. Continue.</div>
+        </div>
+      </div>
+      <div class="mode-toggle">
+        <div class="mode-pill active" data-mode="agora">Agora</div>
+        <div class="mode-pill inactive" data-mode="treino">Treino</div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero-card">
+        <div class="hero-glow"></div>
+        <div class="hero-label">Modo crise</div>
+        <h1 class="hero-title">Você está seguro aqui.</h1>
+        <p class="hero-sub">
+          Use um exercício de 1&ndash;3 minutos para ajudar seu corpo a desacelerar a ansiedade.
+        </p>
+        <div class="hero-cta-row">
+          <button class="cta-btn" id="startNowBtn">
+            <span class="icon">●</span>
+            <span>Iniciar agora</span>
+          </button>
+          <button class="cta-secondary" id="moreToolsBtn">
+            <span>Ver opções</span>
+          </button>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title">Ferramentas rápidas</h2>
+
+        <div class="tool-grid">
+          <article class="tool-card" data-panel-target="panel-breath">
+            <div class="tool-icon-badge">🌬️</div>
+            <div class="tool-title">Respiração guiada</div>
+            <div class="tool-desc">Siga o círculo para inspirar, segurar e expirar com calma.</div>
+            <span class="tool-pill">1–3 min</span>
+          </article>
+
+          <article class="tool-card" data-panel-target="panel-grounding">
+            <div class="tool-icon-badge">🧍‍♂️</div>
+            <div class="tool-title">Grounding 5–4–3–2–1</div>
+            <div class="tool-desc">Aterre na realidade usando visão, tato, audição, olfato e paladar.</div>
+            <span class="tool-pill">2–4 min</span>
+          </article>
+
+          <article class="tool-card" data-panel-target="panel-blank" style="opacity:.6; pointer-events:none;">
+            <div class="tool-icon-badge">🎧</div>
+            <div class="tool-title">Som calmo</div>
+            <div class="tool-desc">Espaço reservado para sons relaxantes em breve.</div>
+            <span class="tool-pill">Em breve</span>
+          </article>
+
+          <article class="tool-card" data-panel-target="panel-blank" style="opacity:.6; pointer-events:none;">
+            <div class="tool-icon-badge">🚶</div>
+            <div class="tool-title">Movimento leve</div>
+            <div class="tool-desc">Sugestões de micro movimentos para liberar tensão.</div>
+            <span class="tool-pill">Em breve</span>
+          </article>
+        </div>
+
+        <!-- Painel Respiração -->
+        <section class="panel" id="panel-breath">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Respiração 4–4–4–4</div>
+              <p class="panel-sub">
+                Inspire, segure, expire e segure de novo. Siga apenas o ritmo, sem se forçar.
+              </p>
+            </div>
+            <span class="pill-small">Respirar</span>
+            <button class="close-btn" data-close-panel="panel-breath">
+              ✕
+            </button>
+          </div>
+
+          <div class="breath-wrapper">
+            <div class="breath-circle" id="breathCircle">
+              <div class="breath-inner-orbit">
+                <div class="breath-dot"></div>
+                <div>
+                  <div id="breathPhase" class="breath-phase">Pronto?</div>
+                  <div id="breathCounter" class="breath-counter">0 / 6 ciclos</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="breath-controls">
+              <button class="btn-ghost" id="breathPlayBtn">
+                ▶ Iniciar
+              </button>
+              <button class="btn-ghost secondary" id="breathResetBtn">
+                ⟳ Resetar
+              </button>
+            </div>
+
+            <p class="hint-text">
+              Se em algum momento ficar desconfortável, pare, respire no seu ritmo e, se preciso, procure apoio profissional.
+            </p>
+          </div>
+        </section>
+
+        <!-- Painel Grounding -->
+        <section class="panel" id="panel-grounding">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Grounding 5–4–3–2–1</div>
+              <p class="panel-sub">
+                Traga sua mente para o presente usando seus sentidos. Não precisa ser perfeito: apenas repare.
+              </p>
+            </div>
+            <span class="pill-small">Aterrissar</span>
+            <button class="close-btn" data-close-panel="panel-grounding">
+              ✕
+            </button>
+          </div>
+
+          <div class="grounding-list">
+            <div class="grounding-item">
+              <div class="grounding-left">
+                <span class="grounding-label">5 coisas que você vê</span>
+                <span class="grounding-desc">Olhe ao redor e liste mentalmente cinco objetos ou detalhes.</span>
+              </div>
+              <button class="grounding-chip" data-step="5">Concluir 5</button>
+            </div>
+
+            <div class="grounding-item">
+              <div class="grounding-left">
+                <span class="grounding-label">4 coisas que você sente</span>
+                <span class="grounding-desc">Perceba texturas: cadeira, roupa, chão, temperatura.</span>
+              </div>
+              <button class="grounding-chip" data-step="4">Concluir 4</button>
+            </div>
+
+            <div class="grounding-item">
+              <div class="grounding-left">
+                <span class="grounding-label">3 coisas que você ouve</span>
+                <span class="grounding-desc">Barulhos próximos ou distantes, mesmo os mais discretos.</span>
+              </div>
+              <button class="grounding-chip" data-step="3">Concluir 3</button>
+            </div>
+
+            <div class="grounding-item">
+              <div class="grounding-left">
+                <span class="grounding-label">2 coisas que você cheira</span>
+                <span class="grounding-desc">Cheiros do ambiente, da sua roupa, de uma bebida.</span>
+              </div>
+              <button class="grounding-chip" data-step="2">Concluir 2</button>
+            </div>
+
+            <div class="grounding-item">
+              <div class="grounding-left">
+                <span class="grounding-label">1 coisa que você prova</span>
+                <span class="grounding-desc">Note o gosto na boca ou de um gole de água, café, etc.</span>
+              </div>
+              <button class="grounding-chip" data-step="1">Concluir 1</button>
+            </div>
+          </div>
+
+          <p class="grounding-progress" id="groundingProgress">
+            0 de 5 passos concluídos.
+          </p>
+        </section>
+
+        <!-- Placeholder panels -->
+        <section class="panel" id="panel-blank">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Em breve</div>
+              <p class="panel-sub">
+                Este espaço está reservado para novos recursos do Whit Black.
+              </p>
+            </div>
+            <button class="close-btn" data-close-panel="panel-blank">
+              ✕
+            </button>
+          </div>
+          <p class="hint-text">
+            Você pode começar personalizando esta tela com sons, playlists ou micro exercícios de movimento que façam sentido para o seu público.
+          </p>
+        </section>
+      </section>
+    </main>
+
+    <footer>
+      Whit Black não substitui atendimento médico ou psicológico.
+      Em situações graves, procure ajuda profissional imediatamente.<br />
+      Código base pensado para publicação em <a href="https://pages.github.com" target="_blank" rel="noopener noreferrer">GitHub Pages</a>.
+    </footer>
+  </div>
+
+  <script>
+    // ---------------------------
+    // Troca de modo (Agora/Treino) – atualmente só visual
+    // ---------------------------
+    const modePills = document.querySelectorAll('.mode-pill');
+
+    modePills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        modePills.forEach(p => p.classList.remove('active'));
+        modePills.forEach(p => p.classList.add('inactive'));
+        pill.classList.add('active');
+        pill.classList.remove('inactive');
+      });
+    });
+
+    // ---------------------------
+    // Abrir/fechar painéis das ferramentas
+    // ---------------------------
+    const toolCards = document.querySelectorAll('.tool-card');
+    const panels = document.querySelectorAll('.panel');
+    const startNowBtn = document.getElementById('startNowBtn');
+    const moreToolsBtn = document.getElementById('moreToolsBtn');
+
+    function openPanel(id) {
+      panels.forEach(p => p.classList.remove('active'));
+      const panel = document.getElementById(id);
+      if (panel) {
+        panel.classList.add('active');
+        panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function closePanel(id) {
+      const panel = document.getElementById(id);
+      if (panel) panel.classList.remove('active');
+    }
+
+    toolCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const target = card.getAttribute('data-panel-target');
+        if (target) openPanel(target);
+      });
+    });
+
+    document.querySelectorAll('.close-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-close-panel');
+        if (target) closePanel(target);
+      });
+    });
+
+    startNowBtn.addEventListener('click', () => {
+      openPanel('panel-breath');
+      startBreathing();
+    });
+
+    moreToolsBtn.addEventListener('click', () => {
+      // Apenas rola até a grade por enquanto
+      document.querySelector('.tool-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // ---------------------------
+    // Lógica da respiração 4–4–4–4 (box breathing)
+    // ---------------------------
+    const breathPhaseEl = document.getElementById('breathPhase');
+    const breathCounterEl = document.getElementById('breathCounter');
+    const breathPlayBtn = document.getElementById('breathPlayBtn');
+    const breathResetBtn = document.getElementById('breathResetBtn');
+
+    const phases = [
+      { label: 'Inspire', seconds: 4 },
+      { label: 'Segure', seconds: 4 },
+      { label: 'Expire', seconds: 4 },
+      { label: 'Segure', seconds: 4 }
+    ];
+
+    const totalCycles = 6;
+    let currentCycle = 0;
+    let currentPhaseIndex = 0;
+    let remainingSeconds = phases[0].seconds;
+    let breathingInterval = null;
+    let breathingRunning = false;
+
+    function updateBreathUI() {
+      const phase = phases[currentPhaseIndex];
+      breathPhaseEl.textContent = phase.label + ' ' + remainingSeconds + 's';
+      breathCounterEl.textContent = currentCycle + ' / ' + totalCycles + ' ciclos';
+    }
+
+    function stepBreathing() {
+      if (remainingSeconds > 0) {
+        remainingSeconds--;
+        updateBreathUI();
+        return;
+      }
+
+      currentPhaseIndex++;
+      if (currentPhaseIndex >= phases.length) {
+        currentPhaseIndex = 0;
+        currentCycle++;
+
+        if (currentCycle > totalCycles) {
+          stopBreathing();
+          breathPhaseEl.textContent = 'Concluído';
+          breathCounterEl.textContent = totalCycles + ' / ' + totalCycles + ' ciclos';
+          return;
+        }
+      }
+      remainingSeconds = phases[currentPhaseIndex].seconds;
+      updateBreathUI();
+    }
+
+    function startBreathing() {
+      if (breathingRunning) return;
+      breathingRunning = true;
+
+      // Reset se estiver concluído
+      if (currentCycle === 0 && currentPhaseIndex === 0 && remainingSeconds === phases[0].seconds) {
+        // primeira vez
+      }
+      if (!breathingInterval) {
+        updateBreathUI();
+        breathingInterval = setInterval(stepBreathing, 1000);
+      }
+      breathPlayBtn.textContent = 'Pausar';
+    }
+
+    function pauseBreathing() {
+      breathingRunning = false;
+      if (breathingInterval) clearInterval(breathingInterval);
+      breathingInterval = null;
+      breathPlayBtn.textContent = 'Retomar';
+    }
+
+    function stopBreathing() {
+      breathingRunning = false;
+      if (breathingInterval) clearInterval(breathingInterval);
+      breathingInterval = null;
+      breathPlayBtn.textContent = 'Reiniciar';
+    }
+
+    function resetBreathing() {
+      stopBreathing();
+      currentCycle = 0;
+      currentPhaseIndex = 0;
+      remainingSeconds = phases[0].seconds;
+      breathPhaseEl.textContent = 'Pronto?';
+      breathCounterEl.textContent = '0 / ' + totalCycles + ' ciclos';
+      breathPlayBtn.textContent = '▶ Iniciar';
+    }
+
+    breathPlayBtn.addEventListener('click', () => {
+      if (!breathingRunning && currentCycle < totalCycles) {
+        startBreathing();
+      } else if (breathingRunning) {
+        pauseBreathing();
+      } else if (!breathingRunning && currentCycle >= totalCycles) {
+        resetBreathing();
+        startBreathing();
+      }
+    });
+
+    breathResetBtn.addEventListener('click', resetBreathing);
+
+    // ---------------------------
+    // Grounding 5–4–3–2–1
+    // ---------------------------
+    const groundingChips = document.querySelectorAll('.grounding-chip');
+    const groundingProgressEl = document.getElementById('groundingProgress');
+    let groundingCompleted = new Set();
+
+    function updateGroundingProgress() {
+      const count = groundingCompleted.size;
+      groundingProgressEl.textContent = count + ' de 5 passos concluídos.';
+      if (count === 5) {
+        groundingProgressEl.textContent = 'Todos os 5 passos concluídos. Observe se seu corpo está um pouco mais calmo.';
+      }
+    }
+
+    groundingChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const step = chip.getAttribute('data-step');
+        if (!groundingCompleted.has(step)) {
+          groundingCompleted.add(step);
+          chip.classList.add('active');
+        } else {
+          groundingCompleted.delete(step);
+          chip.classList.remove('active');
+        }
+        updateGroundingProgress();
+      });
+    });
+  </script>
+</body>
+</html>
+
