@@ -6,15 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta
     name="description"
-    content="Whit Black é um sistema simples para ajudar em momentos de ansiedade, com exercícios rápidos de respiração e grounding."
+    content="Whit Black é um sistema simples para ajudar em momentos de ansiedade, com exercícios rápidos de respiração, grounding, sons calmos e movimento leve."
   />
   <style>
     :root {
-      /* Paleta calma azul-esverdeada */
-      --bg-main: #0f172a;      /* fundo escuro elegante */
-      --bg-card: #020617;      /* cartas/barras */
-      --accent:  #22c55e;      /* verde suave para ações */
-      --accent-soft: #0ea5e9;  /* azul para destaques */
+      --bg-main: #0f172a;
+      --bg-card: #020617;
+      --accent:  #22c55e;
+      --accent-soft: #0ea5e9;
       --text-main: #e5e7eb;
       --text-muted: #9ca3af;
       --danger: #f97373;
@@ -535,6 +534,106 @@
       text-align: center;
     }
 
+    /* Som calmo */
+
+    .sound-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .sound-chip {
+      border-radius: 12px;
+      padding: 8px 6px;
+      font-size: 11px;
+      background: rgba(8, 47, 73, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      color: #e0f2fe;
+      text-align: center;
+      cursor: pointer;
+      transition: background var(--transition-fast), border var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .sound-chip span {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .sound-chip.active {
+      background: linear-gradient(135deg, #0ea5e9 0, #22c55e 100%);
+      color: #020617;
+      border-color: rgba(56, 189, 248, 0.8);
+      box-shadow: 0 10px 30px rgba(34, 197, 94, 0.7);
+      transform: translateY(-1px);
+    }
+
+    .sound-note {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .sound-toggle-row {
+      margin-top: 8px;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Movimento leve */
+
+    .move-wrapper {
+      margin-top: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .move-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .move-step {
+      border-radius: 14px;
+      padding: 9px 10px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+    }
+
+    .move-step span.label {
+      font-weight: 500;
+    }
+
+    .move-counter {
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: rgba(8, 47, 73, 0.9);
+      color: #e0f2fe;
+      font-size: 11px;
+    }
+
+    .move-controls {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .move-progress {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 4px;
+    }
+
     /* Footer */
 
     footer {
@@ -592,8 +691,6 @@
         transform: translateY(0);
       }
     }
-
-    /* Responsivo */
 
     @media (min-width: 640px) {
       .app-shell {
@@ -662,22 +759,22 @@
             <span class="tool-pill">2–4 min</span>
           </article>
 
-          <article class="tool-card" data-panel-target="panel-blank" style="opacity:.6; pointer-events:none;">
+          <article class="tool-card" data-panel-target="panel-sound">
             <div class="tool-icon-badge">🎧</div>
             <div class="tool-title">Som calmo</div>
-            <div class="tool-desc">Espaço reservado para sons relaxantes em breve.</div>
-            <span class="tool-pill">Em breve</span>
+            <div class="tool-desc">Escolha um som ambiente suave para acompanhar o momento.</div>
+            <span class="tool-pill">Fundo</span>
           </article>
 
-          <article class="tool-card" data-panel-target="panel-blank" style="opacity:.6; pointer-events:none;">
+          <article class="tool-card" data-panel-target="panel-move">
             <div class="tool-icon-badge">🚶</div>
             <div class="tool-title">Movimento leve</div>
-            <div class="tool-desc">Sugestões de micro movimentos para liberar tensão.</div>
-            <span class="tool-pill">Em breve</span>
+            <div class="tool-desc">Micro movimentos para liberar um pouco da tensão do corpo.</div>
+            <span class="tool-pill">1–3 min</span>
           </article>
         </div>
 
-        <!-- Painel Respiração -->
+        <!-- Respiração -->
         <section class="panel" id="panel-breath">
           <div class="panel-header">
             <div>
@@ -718,7 +815,7 @@
           </div>
         </section>
 
-        <!-- Painel Grounding -->
+        <!-- Grounding -->
         <section class="panel" id="panel-grounding">
           <div class="panel-header">
             <div>
@@ -780,22 +877,98 @@
           </p>
         </section>
 
-        <!-- Placeholder panels -->
-        <section class="panel" id="panel-blank">
+        <!-- Som calmo -->
+        <section class="panel" id="panel-sound">
           <div class="panel-header">
             <div>
-              <div class="panel-title">Em breve</div>
+              <div class="panel-title">Som calmo</div>
               <p class="panel-sub">
-                Este espaço está reservado para novos recursos do Whit Black.
+                Escolha um som ambiente suave para tocar em fundo enquanto usa os outros exercícios.
               </p>
             </div>
-            <button class="close-btn" data-close-panel="panel-blank">
+            <span class="pill-small">Som</span>
+            <button class="close-btn" data-close-panel="panel-sound">
               ✕
             </button>
           </div>
-          <p class="hint-text">
-            Você pode começar personalizando esta tela com sons, playlists ou micro exercícios de movimento que façam sentido para o seu público.
+
+          <div class="sound-grid">
+            <button class="sound-chip" data-sound="rain">
+              <span>🌧️</span>
+              Chuva leve
+            </button>
+            <button class="sound-chip" data-sound="river">
+              <span>🌊</span>
+              Rio calmo
+            </button>
+            <button class="sound-chip" data-sound="white">
+              <span>📡</span>
+              Ruído branco
+            </button>
+          </div>
+
+          <div class="sound-toggle-row">
+            <button class="btn-ghost secondary" id="soundStopBtn">
+              ⏹ Parar som
+            </button>
+          </div>
+
+          <p class="sound-note">
+            O som só começa após sua interação (clique) por causa das regras dos navegadores. Ajuste o volume pelo controle do seu dispositivo.[web:58]
           </p>
+
+          <!-- Sons básicos em loop (pode trocar os arquivos pelos seus próprios) -->
+          <audio id="audio-rain" loop>
+            <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_c3b043c1df.mp3?filename=rainy-day-in-town-189199.mp3" type="audio/mpeg" />
+          </audio>
+          <audio id="audio-river" loop>
+            <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_de4e90a553.mp3?filename=river-ambience-6413.mp3" type="audio/mpeg" />
+          </audio>
+          <audio id="audio-white" loop>
+            <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_8b3327762a.mp3?filename=white-noise-ambient-110253.mp3" type="audio/mpeg" />
+          </audio>
+        </section>
+
+        <!-- Movimento leve -->
+        <section class="panel" id="panel-move">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Movimento leve</div>
+              <p class="panel-sub">
+                Pequenos movimentos ajudam a liberar parte da tensão. Faça devagar e dentro do seu limite físico.[web:67][web:72]
+              </p>
+            </div>
+            <span class="pill-small">Mover</span>
+            <button class="close-btn" data-close-panel="panel-move">
+              ✕
+            </button>
+          </div>
+
+          <div class="move-wrapper">
+            <div class="move-steps">
+              <div class="move-step">
+                <span class="label">Alongar ombros</span>
+                <span class="move-counter" id="counter-shoulder">0 / 8 giros</span>
+              </div>
+              <div class="move-step">
+                <span class="label">Abrir e fechar mãos</span>
+                <span class="move-counter" id="counter-hands">0 / 12 vezes</span>
+              </div>
+              <div class="move-step">
+                <span class="label">Respirar e virar pescoço</span>
+                <span class="move-counter" id="counter-neck">0 / 6 vezes</span>
+              </div>
+            </div>
+
+            <div class="move-controls">
+              <button class="btn-ghost" id="moveStartBtn">▶ Guiar sequência</button>
+              <button class="btn-ghost secondary" id="moveResetBtn">⟳ Resetar contadores</button>
+            </div>
+
+            <p class="move-progress" id="moveProgress">
+              Toque em "Guiar sequência" e siga as instruções mentais para cada movimento.
+            </p>
+          </div>
         </section>
       </section>
     </main>
@@ -808,11 +981,8 @@
   </div>
 
   <script>
-    // ---------------------------
-    // Troca de modo (Agora/Treino) – atualmente só visual
-    // ---------------------------
+    // Modo visual Agora/Treino
     const modePills = document.querySelectorAll('.mode-pill');
-
     modePills.forEach(pill => {
       pill.addEventListener('click', () => {
         modePills.forEach(p => p.classList.remove('active'));
@@ -822,9 +992,7 @@
       });
     });
 
-    // ---------------------------
-    // Abrir/fechar painéis das ferramentas
-    // ---------------------------
+    // Abrir/fechar painéis
     const toolCards = document.querySelectorAll('.tool-card');
     const panels = document.querySelectorAll('.panel');
     const startNowBtn = document.getElementById('startNowBtn');
@@ -864,13 +1032,10 @@
     });
 
     moreToolsBtn.addEventListener('click', () => {
-      // Apenas rola até a grade por enquanto
       document.querySelector('.tool-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 
-    // ---------------------------
-    // Lógica da respiração 4–4–4–4 (box breathing)
-    // ---------------------------
+    // Respiração 4–4–4–4
     const breathPhaseEl = document.getElementById('breathPhase');
     const breathCounterEl = document.getElementById('breathCounter');
     const breathPlayBtn = document.getElementById('breathPlayBtn');
@@ -922,11 +1087,6 @@
     function startBreathing() {
       if (breathingRunning) return;
       breathingRunning = true;
-
-      // Reset se estiver concluído
-      if (currentCycle === 0 && currentPhaseIndex === 0 && remainingSeconds === phases[0].seconds) {
-        // primeira vez
-      }
       if (!breathingInterval) {
         updateBreathUI();
         breathingInterval = setInterval(stepBreathing, 1000);
@@ -971,9 +1131,7 @@
 
     breathResetBtn.addEventListener('click', resetBreathing);
 
-    // ---------------------------
     // Grounding 5–4–3–2–1
-    // ---------------------------
     const groundingChips = document.querySelectorAll('.grounding-chip');
     const groundingProgressEl = document.getElementById('groundingProgress');
     let groundingCompleted = new Set();
@@ -999,7 +1157,135 @@
         updateGroundingProgress();
       });
     });
+
+    // Som calmo
+    const soundChips = document.querySelectorAll('.sound-chip');
+    const soundStopBtn = document.getElementById('soundStopBtn');
+    const audioRain = document.getElementById('audio-rain');
+    const audioRiver = document.getElementById('audio-river');
+    const audioWhite = document.getElementById('audio-white');
+    const soundMap = {
+      rain: audioRain,
+      river: audioRiver,
+      white: audioWhite
+    };
+
+    function stopAllSounds() {
+      Object.values(soundMap).forEach(audio => {
+        audio.pause();
+        audio.currentTime = 0;
+      });
+      soundChips.forEach(chip => chip.classList.remove('active'));
+    }
+
+    soundChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const key = chip.getAttribute('data-sound');
+        if (!key || !soundMap[key]) return;
+
+        if (chip.classList.contains('active')) {
+          // se clicar de novo, para
+          stopAllSounds();
+          return;
+        }
+
+        stopAllSounds();
+        chip.classList.add('active');
+        soundMap[key].play().catch(() => {
+          // se o navegador bloquear autoplay, o usuário pode tentar de novo
+        });
+      });
+    });
+
+    soundStopBtn.addEventListener('click', stopAllSounds);
+
+    // Movimento leve
+    const moveStartBtn = document.getElementById('moveStartBtn');
+    const moveResetBtn = document.getElementById('moveResetBtn');
+    const moveProgressEl = document.getElementById('moveProgress');
+    const counterShoulder = document.getElementById('counter-shoulder');
+    const counterHands = document.getElementById('counter-hands');
+    const counterNeck = document.getElementById('counter-neck');
+
+    let moveStepIndex = 0;
+    let moveTimer = null;
+
+    function resetMove() {
+      moveStepIndex = 0;
+      clearInterval(moveTimer);
+      moveTimer = null;
+      counterShoulder.textContent = '0 / 8 giros';
+      counterHands.textContent = '0 / 12 vezes';
+      counterNeck.textContent = '0 / 6 vezes';
+      moveProgressEl.textContent = 'Toque em "Guiar sequência" e siga as instruções mentais para cada movimento.';
+      moveStartBtn.textContent = '▶ Guiar sequência';
+    }
+
+    function startMove() {
+      resetMove();
+      const steps = [
+        {
+          label: 'Gire os ombros devagar para trás, como se desenhasse círculos com eles.',
+          total: 8,
+          counterEl: counterShoulder,
+          unit: 'giros'
+        },
+        {
+          label: 'Abra bem as mãos e feche devagar, sentindo a musculatura das mãos.',
+          total: 12,
+          counterEl: counterHands,
+          unit: 'vezes'
+        },
+        {
+          label: 'Com a respiração calma, vire o pescoço suavemente para os lados dentro do seu limite.',
+          total: 6,
+          counterEl: counterNeck,
+          unit: 'vezes'
+        }
+      ];
+
+      let currentCount = 0;
+      moveStartBtn.textContent = 'Em andamento...';
+
+      function setStep(index) {
+        if (index >= steps.length) {
+          clearInterval(moveTimer);
+          moveTimer = null;
+          moveProgressEl.textContent = 'Sequência concluída. Perceba se seu corpo está um pouco menos tenso.';
+          moveStartBtn.textContent = 'Repetir sequência';
+          return;
+        }
+        moveStepIndex = index;
+        currentCount = 0;
+        const step = steps[index];
+        moveProgressEl.textContent = step.label;
+        step.counterEl.textContent = '0 / ' + step.total + ' ' + step.unit;
+      }
+
+      setStep(0);
+
+      moveTimer = setInterval(() => {
+        const step = steps[moveStepIndex];
+        if (!step) return;
+        currentCount++;
+        if (currentCount <= step.total) {
+          step.counterEl.textContent = currentCount + ' / ' + step.total + ' ' + step.unit;
+        }
+        if (currentCount >= step.total) {
+          setStep(moveStepIndex + 1);
+        }
+      }, 2000);
+    }
+
+    moveStartBtn.addEventListener('click', () => {
+      if (moveTimer) {
+        // já está rodando, não faz nada
+        return;
+      }
+      startMove();
+    });
+
+    moveResetBtn.addEventListener('click', resetMove);
   </script>
 </body>
 </html>
-
